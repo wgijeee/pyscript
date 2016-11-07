@@ -11,4 +11,11 @@ Python2.6
 Script based software: xtrabackup1.5+ 
 
 每天晚上23点，对数据库进行一次完整备份。第二天0-22点，每小时进行一次增量备份。
-每次备份前把上次的完整备份和23次增量备份移动到指定目录里，保留7天的数据。
+每次备份前把上次的完整备份和23次增量备份移动到指定目录里，保留7天的数据。    
+#添加定时任务方法.
+```
+shell>sudo service crond start
+shell>sudo crontab -e
+* */1 * * * /usr/bin/python mysql.py
+shell>sudo chkconfig crond on
+```
