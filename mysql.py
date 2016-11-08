@@ -54,13 +54,13 @@ def cleanstore():
     subprocess.call(command,shell=True)
 #tar old day database.
 def tarrem():
-        date = datetime.datetime.now().strftime("%y%m%d")
-        oldate=int(date)-1
-        suffix = str(oldate)
-        storedir = "%s/%s-bak" %(stores,suffix)
-        commandtar = "tar -zcvf %s/%s.tar.gz %s --remove-files" %(stores,suffix,storedir)
-        subprocess.call(commandtar,shell=True)
-        logging.info(commandtar)
+    date = datetime.datetime.now().strftime("%y%m%d")
+    oldate=int(date)-1
+    suffix = str(oldate)
+    storedir = "%s/%s-bak" %(stores,suffix)
+    commandtar = "tar -zcvf %s/%s.tar.gz %s --remove-files" %(stores,suffix,storedir)
+    subprocess.call(commandtar,shell=True)
+    logging.info(commandtar)
 
 def backup():
     if not os.path.exists(basedir):
