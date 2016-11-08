@@ -19,3 +19,6 @@ shell>sudo crontab -e
 * */1 * * * /usr/bin/python mysql.py
 shell>sudo chkconfig crond on
 ```
+2016-11-08
+添加使用tar压缩旧的数据。。。。好烦呢
+:(
