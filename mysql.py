@@ -52,18 +52,6 @@ def cleanstore():
     command = "find %s -type d -mtime +7 |xargs rm -fr" % stores
 #Delete the backup data for more than 7 days in the dump directory, and modify it according to the actual data.删除转储目录中超过7天的备份数据，自己按实际修改.
     subprocess.call(command,shell=True)
-#tar old day database.
-def tarold():
-    date = datetime.datetime.now().strftime("%y%m%d")
-    oldate=int(date)-1
-    suffix = str(oldate)
-    storedir = "%s/%s-bak" %(stores,suffix)
-    if  os.path.exist(storedir):
-        commandtar = "tar -zcvf %s/%s.tar.gz %s --remove-files" %(stores,suffix,storedir)
-        subprocess.call(commandtar,shell=True)
-        logging.info(commandtar)
-    else:
-        logging.info('Oh my god error failed')
 
 def backup():
     if not os.path.exists(basedir):
