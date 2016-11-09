@@ -79,4 +79,3 @@ def backup():
 if __name__ == '__main__':
     backup()
     cleanstore()
-    tarold()
