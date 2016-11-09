@@ -53,25 +53,29 @@ def cleanstore():
 #Delete the backup data for more than 7 days in the dump directory, and modify it according to the actual data.删除转储目录中超过7天的备份数据，自己按实际修改.
     subprocess.call(command,shell=True)
 #tar old day database.
-def tarrem():
+def tarold():
     date = datetime.datetime.now().strftime("%y%m%d")
     oldate=int(date)-1
     suffix = str(oldate)
     storedir = "%s/%s-bak" %(stores,suffix)
-    commandtar = "tar -zcvf %s/%s.tar.gz %s --remove-files" %(stores,suffix,storedir)
-    subprocess.call(commandtar,shell=True)
-    logging.info(commandtar)
+    if  os.path.exist(storedir):
+        commandtar = "tar -zcvf %s/%s.tar.gz %s --remove-files" %(stores,suffix,storedir)
+        subprocess.call(commandtar,shell=True)
+        logging.info(commandtar)
+    else:
+        logging.info('Oh my god error failed')
 
 def backup():
     if not os.path.exists(basedir):
         subprocess.call("mkdir -p %s"%basedir,shell=True)
-    commandfull = "innobackupex --user=%s --password=%s  --no-timestamp %s" %(backuser,backpass,fullback_dir)
+    commandfull = "innobackupex --user=%s --password=%s --databases=%s --no-timestamp %s" %(backuser,backpass,databases,fullback_dir)
     if cuhour == '23':
 #  Backup method, 23 point full backup every day, second days 0-22 point incremental backup 备份方法，每天23点完整备份，第二天0-22点增量备份
         storebefore()
         subprocess.call("rm -fr %s/*"%basedir,shell=True)
         subprocess.call(commandfull,shell=True)
         logging.info(commandfull)
+
     else:
         if int(cuhour) - 1 >= 0:
             increbase_dir = '%s/%s' %(basedir,str(int(cuhour) - 1))
@@ -80,11 +84,11 @@ def backup():
         if not os.path.exists(increbase_dir):
             logging.info(' Incremental text backup does not exist (%s) to stop running. '%increbase_dir)
             exit(0)
-        commandincre = "innobackupex --user=%s --password=%s  --no-timestamp --incremental %s --incremental-basedir=%s" %(backuser,backpass,increment_dir,increbase_dir)
+        commandincre = "innobackupex --user=%s --password=%s  --databases=%s --no-timestamp --incremental %s --incremental-basedir=%s" %(backuser,backpass,databases,increment_dir,increbase_dir)
         subprocess.call(commandincre,shell=True)
         logging.info(commandincre)
-         
+        
 if __name__ == '__main__':
-	tarrem()
     backup()
     cleanstore()
+    tarold()
